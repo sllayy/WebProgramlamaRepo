@@ -1,0 +1,14 @@
+Projeye başlandı, projenin tasarım kısmında kritik kararlar alınarak projenin gidişatının nasıl olacağı belirlendi.
+Projemiz genel anlamda hem erkek hem de kadın kuaförünü içeren yapay zeka destekli MVC kullanarak yazılmış kuaför web sitesidir.
+İlk commit'te projenin genel hatları belirlendi, yazılım geliştirme aşamalarında kod öncelikli mi veritabanı öncelikli mi ilerleneceği seçildi.
+
+Yazılım geliştirme sürecinde bize ışık tutabilecek bazı kütüphaneler yüklendi:
+
+Microsoft.AspNetCore.App (ASP.NET Core Framework'ün temel bileşenleri)
+Microsoft.AspNetCore.Identity (Kimlik doğrulama ve kullanıcı yönetimi için)
+Microsoft.AspNetCore.Identity.EntityFrameworkCore (Identity ile Entity Framework entegrasyonu)
+Microsoft.EntityFrameworkCore (Entity Framework Core'un ana kütüphanesi)
+Microsoft.EntityFrameworkCore.Tools (Migration ve veritabanı yönetimi araçları için)
+Microsoft.Extensions.Configuration.Json (JSON tabanlı konfigürasyon desteği)
+Microsoft.EntityFrameworkCore.SqlServer (SQL Server kullanımı için)
+Npgsql.EntityFrameworkCore.PostgreSQL (PostgreSQL kullanımı için)
