@@ -18,7 +18,21 @@ namespace KadinErkekKuafor.Controllers
 			return View();
 		}
 
-		public IActionResult Privacy()
+        public IActionResult PriceList()
+        {
+            var prices = new List<Price>
+    {
+        new Price { Name = "VIP Paket", Category = "Damat", PriceValue = "4000 TL" },
+        new Price { Name = "Damat", Category = "Damat", PriceValue = "2000 TL" },
+        new Price { Name = "Manikür", Category = "Manikür & Pedikür", PriceValue = "400 TL" },
+        // Diğer fiyatları buraya ekleyebilirsiniz
+    };
+
+            return View(prices);
+        }
+
+
+        public IActionResult Privacy()
 		{
 			return View();
 		}

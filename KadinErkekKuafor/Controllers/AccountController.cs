@@ -1,68 +1,64 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using KuaforYonetimSistemi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
-namespace KuaforYonetimSistemi.Controllers
+
+public class AccountController : Controller
 {
-    public class AccountController : Controller
+    // Login POST Action
+    [HttpPost]
+    public IActionResult Login(string email, string password)
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        var user = _userService.GetUserByEmail(email);  // E-posta ile kullanıcıyı bul
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        if (user == null) // Eğer kullanıcı yoksa
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            TempData["ErrorMessage"] = "Hesabınız yok, lütfen kaydolun.";  // Hata mesajı
+            return RedirectToAction("Login");  // Login sayfasına yönlendir
         }
 
-        // GET: Account/Login
-        public IActionResult Login()
+        if (user.Password != password) // Parola yanlışsa
         {
-            return View();
+            TempData["ErrorMessage"] = "Geçersiz e-posta veya parola.";  // Hata mesajı
+            return RedirectToAction("Login");
         }
 
-        // POST: Account/Login
-        [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
-        {
-            var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home"); // Başarılı girişte ana sayfaya yönlendir
-            }
+        // Başarılı giriş işlemi
+        TempData["SuccessMessage"] = "Hoş geldiniz! Oturum başarıyla açıldı.";  // Başarı mesajı
+        return RedirectToAction("Index", "Home");  // Ana sayfaya yönlendir
+    }
 
-            ViewBag.ErrorMessage = "Geçersiz kullanıcı adı veya şifre.";
-            return View();
+    // Register GET Action
+    public IActionResult Register()
+    {
+        return View();
+    }
+
+    // Register POST Action
+    [HttpPost]
+    public IActionResult Register(string email, string password, string confirmPassword)
+    {
+        if (password != confirmPassword)  // Parola eşleşmesi kontrolü
+        {
+            TempData["ErrorMessage"] = "Parolalar eşleşmiyor.";  // Hata mesajı
+            return RedirectToAction("Register");  // Register sayfasına yönlendir
         }
 
-        // GET: Account/Register
-        public IActionResult Register()
+        var existingUser = _userService.GetUserByEmail(email);  // E-posta ile kontrol et
+        if (existingUser != null)
         {
-            return View();
+            TempData["ErrorMessage"] = "Bu e-posta adresiyle bir hesap zaten var.";  // Hata mesajı
+            return RedirectToAction("Register");
         }
 
-        // POST: Account/Register
-        [HttpPost]
-        public async Task<IActionResult> Register(string email, string password)
+        // Yeni kullanıcıyı oluştur ve kaydet
+        var user = new User
         {
-            var user = new IdentityUser { UserName = email, Email = email };
-            var result = await _userManager.CreateAsync(user, password);
+            Email = email,
+            Password = password
+        };
+        _userService.CreateUser(user);
 
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home"); // Başarılı kayıtta ana sayfaya yönlendir
-            }
-
-            ViewBag.ErrorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-            return View();
-        }
-
-        // GET: Account/Logout
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
+        TempData["SuccessMessage"] = "Kayıt başarılı! Artık oturum açabilirsiniz.";  // Başarı mesajı
+        return RedirectToAction("Login");  // Oturum açma sayfasına yönlendir
     }
 }

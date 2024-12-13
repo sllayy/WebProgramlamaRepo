@@ -1,0 +1,135 @@
+﻿@model List<Price>
+@{
+    ViewData["Title"] = "Fiyat Bilgileri";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .category {
+            margin-bottom: 30px;
+        }
+
+            .category h3 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 8px 0;
+        }
+
+            .price-item:last-child {
+                border-bottom: none;
+            }
+
+            .price-item span {
+                font-weight: bold;
+            }
+
+        .price {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>@ViewData["Title"]</h2>
+
+        <div class="category">
+            <h3>Damat</h3>
+            <div class="price-item">
+                <span> VIP Paket</span>
+                <span class="price">4000 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Damat</span>
+                <span class="price">2000 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Profesyonel Paket</span>
+                <span class="price">2500 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Profesyonel Damat</span>
+                <span class="price">1500 TL</span>
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Manikür & Pedikür</h3>
+            <div class="price-item">
+                <span>Manikür</span>
+                <span class="price">400 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Pedikür</span>
+                <span class="price">500 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Manikür & Pedikür</span>
+                <span class="price">750 TL</span>
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Diğer İşlemler</h3>
+            <div class="price-item">
+                <span>Lazer Epilasyon</span>
+                <span class="price">------- TL</span>
+            </div>
+            <div class="price-item">
+                <span>Davines Saç Bakımı</span>
+                <span class="price">300 - 1000 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Renklendirme</span>
+                <span class="price">1500 - 3000 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Klasik Cilt Bakımı</span>
+                <span class="price">600 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Genel Cilt Bakımı</span>
+                <span class="price">750 TL</span>
+            </div>
+            <div class="price-item">
+                <span>Perma</span>
+                <span class="price">1500 - 3000 TL</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
