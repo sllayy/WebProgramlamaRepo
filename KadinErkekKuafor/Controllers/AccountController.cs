@@ -56,7 +56,7 @@ public class AccountController : Controller
             Email = email,
             Password = password
         };
-        _userService.CreateUser(user);
+        
 
         TempData["SuccessMessage"] = "Kayıt başarılı! Artık oturum açabilirsiniz.";  // Başarı mesajı
         return RedirectToAction("Login");  // Oturum açma sayfasına yönlendir
