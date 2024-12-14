@@ -1,0 +1,41 @@
+﻿@model IEnumerable<KuaforYonetimSistemi.Models.Admin>
+
+@{
+    ViewData["Title"] = "Admin Listesi";
+}
+
+<h1>Admin Listesi</h1>
+
+<p>
+    <a href="/Admin/Create" class="btn btn-primary">Yeni Admin Ekle</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var admin in Model)
+        {
+            <tr>
+                <td>@admin.AdminID</td>
+                <td>@admin.Ad</td>
+                <td>@admin.Soyad</td>
+                <td>@admin.Email</td>
+                <td>@admin.Rol</td>
+                <td>
+                    <a href="/Admin/Edit/@admin.AdminID" class="btn btn-warning">Düzenle</a>
+                    <a href="/Admin/Details/@admin.AdminID" class="btn btn-info">Detay</a>
+                    <a href="/Admin/Delete/@admin.AdminID" class="btn btn-danger">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
