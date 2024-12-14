@@ -51,9 +51,7 @@ namespace KadinErkekKuafor.Controllers
             return View();
         }
 
-        // POST: Musteri/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MusteriID,Ad,Soyad,Email,Sifre,Telefon,Adres,DogumTarihi,KayitTarihi")] Musteri musteri)
@@ -83,9 +81,8 @@ namespace KadinErkekKuafor.Controllers
             return View(musteri);
         }
 
-        // POST: Musteri/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+ 
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MusteriID,Ad,Soyad,Email,Sifre,Telefon,Adres,DogumTarihi,KayitTarihi")] Musteri musteri)

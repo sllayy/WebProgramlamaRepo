@@ -1,64 +1,83 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
-
+using KuaforYonetimSistemi.Models;
 
 public class AccountController : Controller
 {
-    // Login POST Action
+    private readonly IMusteriService _musteriService;
+
+    public AccountController(IMusteriService musteriService)
+    {
+        _musteriService = musteriService;
+    }
+
+    // GET: Login Sayfası
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    // POST: Oturum Açma İşlemi
     [HttpPost]
     public IActionResult Login(string email, string password)
     {
-        var user = _userService.GetUserByEmail(email);  // E-posta ile kullanıcıyı bul
-
-        if (user == null) // Eğer kullanıcı yoksa
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            TempData["ErrorMessage"] = "Hesabınız yok, lütfen kaydolun.";  // Hata mesajı
-            return RedirectToAction("Login");  // Login sayfasına yönlendir
-        }
-
-        if (user.Password != password) // Parola yanlışsa
-        {
-            TempData["ErrorMessage"] = "Geçersiz e-posta veya parola.";  // Hata mesajı
+            TempData["ErrorMessage"] = "E-posta ve parola boş bırakılamaz.";
             return RedirectToAction("Login");
         }
 
-        // Başarılı giriş işlemi
-        TempData["SuccessMessage"] = "Hoş geldiniz! Oturum başarıyla açıldı.";  // Başarı mesajı
-        return RedirectToAction("Index", "Home");  // Ana sayfaya yönlendir
+        var musteri = _musteriService.GetMusteriByEmail(email);
+
+        if (musteri == null)
+        {
+            TempData["ErrorMessage"] = "Hesabınız bulunamadı. Lütfen kaydolun.";
+            return RedirectToAction("Login");
+        }
+
+        if (musteri.Sifre != password)
+        {
+            TempData["ErrorMessage"] = "E-posta veya parola yanlış.";
+            return RedirectToAction("Login");
+        }
+
+        TempData["SuccessMessage"] = $"Hoş geldiniz, {musteri.Ad}!";
+        return RedirectToAction("Index", "Home");
     }
 
-    // Register GET Action
+    // GET: Kaydol Sayfası
     public IActionResult Register()
     {
         return View();
     }
 
-    // Register POST Action
+    // POST: Kaydolma İşlemi
     [HttpPost]
     public IActionResult Register(string email, string password, string confirmPassword)
     {
-        if (password != confirmPassword)  // Parola eşleşmesi kontrolü
+        if (password != confirmPassword)
         {
-            TempData["ErrorMessage"] = "Parolalar eşleşmiyor.";  // Hata mesajı
-            return RedirectToAction("Register");  // Register sayfasına yönlendir
-        }
-
-        var existingUser = _userService.GetUserByEmail(email);  // E-posta ile kontrol et
-        if (existingUser != null)
-        {
-            TempData["ErrorMessage"] = "Bu e-posta adresiyle bir hesap zaten var.";  // Hata mesajı
+            TempData["ErrorMessage"] = "Parolalar eşleşmiyor.";
             return RedirectToAction("Register");
         }
 
-        // Yeni kullanıcıyı oluştur ve kaydet
-        var user = new User
+        var existingMusteri = _musteriService.GetMusteriByEmail(email);
+
+        if (existingMusteri != null)
+        {
+            TempData["ErrorMessage"] = "Bu e-posta adresiyle bir hesap zaten var.";
+            return RedirectToAction("Register");
+        }
+
+        var musteri = new Musteri
         {
             Email = email,
-            Password = password
+            Sifre = password,
+            KayitTarihi = DateTime.Now
         };
-        
 
-        TempData["SuccessMessage"] = "Kayıt başarılı! Artık oturum açabilirsiniz.";  // Başarı mesajı
-        return RedirectToAction("Login");  // Oturum açma sayfasına yönlendir
+        _musteriService.CreateMusteri(musteri);
+
+        TempData["SuccessMessage"] = "Kaydınız başarıyla oluşturuldu. Şimdi oturum açabilirsiniz.";
+        return RedirectToAction("Login");
     }
 }

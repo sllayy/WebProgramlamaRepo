@@ -1,4 +1,5 @@
-using KuaforYonetimSistemi.Data; // AppDbContext sýnýfýný kullanabilmek için
+using KuaforYonetimSistemi.Data; // ApplicationDbContext sýnýfýný kullanabilmek için
+//using KuaforYonetimSistemi.Services; // IMusteriService ve MusteriService için
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,14 +7,16 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Veritabaný baðlantýsýný yapýlandýrýn (PostgreSQL veya SQL Server kullanabilirsiniz)
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // SQL Server için
-                                                                                           // options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); // PostgreSQL için
+// PostgreSQL veritabaný baðlantýsýný yapýlandýrýn
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); // PostgreSQL baðlantýsý
+
+// IMusteriService ve MusteriService'i DI container'a ekleyin
+builder.Services.AddScoped<IMusteriService, MusteriService>();
 
 // Identity servisi ekleyin (kullanýcý doðrulama ve yönetimi için)
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
 // MVC'yi yapýlandýrýn
